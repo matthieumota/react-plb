@@ -22,6 +22,7 @@ function Book({
   selected = false,
   onSelect,
 }: BookProps) {
+  // Mettre le nombre de like sur le book...
   const [like, setLike] = useState(0)
 
   const handleSee = () => {
