@@ -12,10 +12,21 @@ export type Book = {
 type BookProps = {
   book: Book
   active?: boolean
+  selected?: boolean
+  onSelect: () => void
 }
 
-function Book({ book, active = true }: BookProps) {
+function Book({
+  book,
+  active = true,
+  selected = false,
+  onSelect,
+}: BookProps) {
   const [like, setLike] = useState(0)
+
+  const handleSee = () => {
+    onSelect()
+  }
 
   const handleLike = () => {
     setLike(like + 1) // 0 + 1
@@ -43,7 +54,9 @@ function Book({ book, active = true }: BookProps) {
         <h2 className="text-md text-gray-600 mb-2">{book.author}</h2>
         <p className="text-sm text-gray-500 mb-2">Publié en {book.year}</p>
 
-        <Button>Voir</Button>
+        <Button onClick={handleSee}>
+          {selected ? 'Déselectionner' : 'Voir'}
+        </Button>
         {/* onClick={() => setLikes(like + 1)} */}
         <Button onClick={handleLike} title={`() => setLikes(${like} + 1)`}>
           ❤️‍🔥
