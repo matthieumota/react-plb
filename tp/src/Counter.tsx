@@ -7,7 +7,7 @@ type CounterProps = {
 
 function Counter({
     initialValue = 0,
-    maxValue,
+    maxValue = Infinity,
 }: CounterProps) {
     const [value, setValue] = useState(initialValue)
 
@@ -21,7 +21,7 @@ function Counter({
                 -
             </button>
             {value}
-            {(!maxValue || value < maxValue) && <button onClick={() => handleIncrement(1)}>
+            {value < maxValue && <button onClick={() => handleIncrement(1)}>
                 +
             </button>}
         </div>

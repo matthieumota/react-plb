@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 type Animal = {
-    name: string,
-    type: string
+  name: string,
+  type: string
 }
 
 function StateChallenge() {
@@ -78,7 +78,8 @@ function StateChallenge() {
 
         <button className="bg-blue-500 text-white hover:bg-blue-700 disabled:opacity-50 duration-300"
           onClick={saveAnimal}
-          disabled={!newAnimalName || !newAnimalType}>
+          disabled={!newAnimalName || !newAnimalType}
+        >
           Sauvegarder
         </button>
       </div>

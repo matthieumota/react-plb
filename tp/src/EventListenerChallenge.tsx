@@ -1,10 +1,10 @@
 import { useState } from "react"
 
 type Bird = {
-    name: string
-    age: number
-    color: string
-    isColorDisplayed: boolean
+  name: string
+  age: number
+  color: string
+  isColorDisplayed: boolean
 }
 
 function EventListenerChallenge() {
