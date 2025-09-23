@@ -75,6 +75,7 @@ export const BOOKS = [
     image: '/assets/la-peste.jpg',
   }
 ]
+export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
 
 function App() {
   const [books, setBooks] = useState<BookType[]>(BOOKS)
