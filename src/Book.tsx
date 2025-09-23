@@ -14,6 +14,7 @@ type BookProps = {
   active?: boolean
   selected?: boolean
   onSelect: () => void
+  onRemove: () => void
 }
 
 function Book({
@@ -21,12 +22,17 @@ function Book({
   active = true,
   selected = false,
   onSelect,
+  onRemove,
 }: BookProps) {
   // Mettre le nombre de like sur le book...
   const [like, setLike] = useState(0)
 
   const handleSee = () => {
     onSelect()
+  }
+
+  const handleRemove = () => {
+    onRemove()
   }
 
   const handleLike = () => {
@@ -62,6 +68,9 @@ function Book({
         <Button onClick={handleLike} title={`() => setLikes(${like} + 1)`}>
           ❤️‍🔥
           {like > 0 && <>({like})</>}
+        </Button>
+        <Button title="Supprimer" onClick={handleRemove} className="bg-red-500 hover:bg-red-800">
+          🗑️
         </Button>
       </div>
     </div>

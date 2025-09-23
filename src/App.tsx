@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Book, { type Book as BookType } from "./Book"
+import Button from "./Button"
 
 let nextId = 11
 export const BOOKS = [
@@ -79,6 +80,19 @@ function App() {
   const [books, setBooks] = useState<BookType[]>(BOOKS)
   const [selectedBook, setSelectedBook] = useState<BookType>()
 
+  const handleAddBook = () => {
+    const randomBook = BOOKS[Math.floor(Math.random() * BOOKS.length)]
+
+    setBooks([
+      ...books,
+      { ...randomBook, id: nextId++ }
+    ])
+  }
+
+  const handleRemoveBook = (book: BookType) => {
+    setBooks(books.filter(b => b.id !== book.id))
+  }
+
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
@@ -90,6 +104,10 @@ function App() {
               book={selectedBook}
               onSelect={() => setSelectedBook(undefined)}
               selected
+              onRemove={() => {
+                handleRemoveBook(selectedBook)
+                setSelectedBook(undefined)
+              }}
             />
           </div>
         </div>}
@@ -101,26 +119,16 @@ function App() {
               book={b}
               onSelect={() => setSelectedBook(b)}
               active={selectedBook?.id !== b.id}
+              onRemove={() => handleRemoveBook(b)}
             />
           )}
         </div>
 
-        <button onClick={() => {
-          setBooks([ ...books, {
-            id: nextId++,
-            title: 'Le Seigneur des Anneaux',
-            author: 'J.R.R. Tolkien',
-            year: 1954,
-            image: '/assets/le-seigneur-des-anneaux.jpg',
-          } ])
-        }}>
-          Ajouter
-        </button>
-        <button onClick={() => {
-          setBooks([])
-        }}>
-          Supprimer
-        </button>
+        <div className="text-center py-10">
+          <Button onClick={handleAddBook}>
+            Ajouter un livre
+          </Button>
+        </div>
       </div>
     </div>
   )
