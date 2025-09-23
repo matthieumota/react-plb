@@ -2,6 +2,7 @@ type ButtonProps = {
 } & React.PropsWithChildren & React.ButtonHTMLAttributes<HTMLButtonElement>
 
 function Button({ children, ...props }: ButtonProps) {
+  // ...props => { id: 5, title: 'toto' } => title="toto" id="5"
   return (
     <button className="bg-blue-500 hover:bg-blue-800 text-white py-1.5 px-4 rounded-md duration-300" {...props}>
       {children}

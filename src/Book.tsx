@@ -45,9 +45,9 @@ function Book({
     <div className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200">
       {book.image &&
         <img
-            src={book.image}
-            alt={`Couverture de ${book.title}`}
-            className="w-full h-64 object-cover"
+          src={book.image}
+          alt={`Couverture de ${book.title}`}
+          className="w-full h-64 object-cover"
         />
       }
       <div className="p-4">
