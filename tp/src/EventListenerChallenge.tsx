@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { useState } from "react"
 
 type Bird = {
@@ -94,81 +95,87 @@ function EventListenerChallenge() {
 
       {JSON.stringify(birds)}
 
-        <div className="grid gap-4 p-4 bg-gray-50">
-            {birds.map((bird) => (
-                <div 
-                    key={bird.name} 
-                    className="p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-                >
-                    <div className="flex justify-between items-center">
-                        <p className="text-lg font-semibold text-gray-800">{bird.name}</p>
-                        <button
-                            onClick={() => handleDeleteBird(bird.name)}
-                            className="text-red-500 hover:text-red-700"
-                        >
-                            Supprimer
-                        </button>
-                    </div>
-                    {bird.age > 0 && <p className="text-sm text-gray-500">Âge: {bird.age}</p>}
-                    {bird.isColorDisplayed && (
-                        <div className="flex items-center gap-2">
-                            <span className="text-gray-600">Couleur:</span>
-                            <input
-                                type="text"
-                                value={bird.color}
-                                onChange={(e) => handleColorChange(bird.name, e.target.value)}
-                                className="border p-1 rounded w-24"
-                            />
-                        </div>
-                    )}
-                </div>
-            ))}
-        </div>
+      <div className="grid gap-4 p-4 bg-gray-50">
+          {birds.map((bird) => (
+              <div 
+                  key={bird.name}
+                  className={clsx("p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300", {
+                    'border border-blue-500': bird.color.toLowerCase() === 'bleu',
+                    'border border-slate-500': bird.color.toLowerCase() === 'noir',
+                    'border border-green-500': bird.color.toLowerCase() === 'blanc',
+                  })}
+              >
+                  <div className="flex justify-between items-center">
+                      <p className="text-lg font-semibold text-gray-800">{bird.name}</p>
+                      <button
+                        onClick={() => handleDeleteBird(bird.name)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        Supprimer
+                      </button>
+                  </div>
+                  {bird.age > 0 && <p className="text-sm text-gray-500">Âge: {bird.age}</p>}
+                  {bird.isColorDisplayed && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-gray-600">Couleur:</span>
+                        <input
+                          type="text"
+                          value={bird.color}
+                          onChange={(e) => handleColorChange(bird.name, e.target.value)}
+                          className="border p-1 rounded w-24"
+                        />
+                      </div>
+                  )}
+              </div>
+          ))}
+      </div>
 
-        <form onSubmit={handleAddBird} className="mb-6 space-y-2">
-            <input
-                type="text"
-                placeholder="Nom"
-                value={newBird.name}
-                onChange={(e) => setNewBird({ ...newBird, name: e.target.value })}
-                className="w-full p-2 border rounded"
-            />
-            <input
-                type="number"
-                placeholder="Âge"
-                value={newBird.age}
-                onChange={(e) => setNewBird({ ...newBird, age: Number(e.target.value) })}
-                className="w-full p-2 border rounded"
-            />
-            <input
-                type="text"
-                placeholder="Couleur"
-                value={newBird.color}
-                onChange={(e) => setNewBird({ ...newBird, color: e.target.value })}
-                className="w-full p-2 border rounded"
-            />
+      {JSON.stringify(newBird)}
 
-            <div className="flex items-center gap-2">
-                <input
-                    type="checkbox"
-                    id="isColorDisplayed"
-                    checked={newBird.isColorDisplayed}
-                    onChange={(e) => setNewBird({ ...newBird, isColorDisplayed: e.target.checked })}
-                    className="mr-2"
-                />
-                <label htmlFor="isColorDisplayed">Afficher la couleur</label>
-            </div>
+      <form onSubmit={handleAddBird} className="mb-6 space-y-2">
+          <input
+              type="text"
+              placeholder="Nom"
+              value={newBird.name}
+              onChange={(e) => setNewBird({ ...newBird, name: e.target.value })}
+              className="w-full p-2 border rounded"
+          />
+          <input
+              type="number"
+              placeholder="Âge"
+              value={newBird.age}
+              onChange={(e) => setNewBird({ ...newBird, age: Number(e.target.value) })}
+              className="w-full p-2 border rounded"
+          />
+          <input
+              type="text"
+              placeholder="Couleur"
+              value={newBird.color}
+              onChange={(e) => setNewBird({ ...newBird, color: e.target.value })}
+              className="w-full p-2 border rounded"
+          />
 
-            {errors.length > 0 && (
-                <ul className="text-red-500 text-sm">
-                    {errors.map((err, i) => <li key={i}>{err}</li>)}
-                </ul>
-            )}
+          <div className="flex items-center gap-2">
+              <input
+                  type="checkbox"
+                  id="isColorDisplayed"
+                  checked={newBird.isColorDisplayed}
+                  onChange={(e) => setNewBird({ ...newBird, isColorDisplayed: e.target.checked })}
+                  className="mr-2"
+              />
+              <label htmlFor="isColorDisplayed">Afficher la couleur</label>
+          </div>
 
-            <button className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 duration-300">
-                Ajouter Oiseau
-            </button>
-        </form>
+          {errors.length > 0 && (
+            <ul className="text-red-500 text-sm border">
+              {errors.map((err, i) => <li key={i}>{err}</li>)}
+            </ul>
+          )}
+
+          <button className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 duration-300">
+              Ajouter Oiseau
+          </button>
+      </form>
     </div>
   )
 }
