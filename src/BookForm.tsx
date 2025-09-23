@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type Book } from './Book'
 import Button from './Button'
 import clsx from 'clsx'
 import { AUTHORS } from './App'
+import Clock from './Clock'
 
 type BookFormProps = {
   book: Book
@@ -14,6 +15,18 @@ type BookFormProps = {
 function BookForm({ book, onCancel, onChange, onSave }: BookFormProps) {
   const [localBook, setLocalBook] = useState(book)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    console.log('Le composant est monté')
+
+    return () => console.log('Le composant est démonté')
+  }, [])
+
+  useEffect(() => {
+    console.log('On a changé localBook avec', localBook)
+
+    return () => console.log('La valeur de localBook va changer', localBook)
+  }, [localBook])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const book = { ...localBook, [event.target.name]: event.target.value }
@@ -62,6 +75,7 @@ function BookForm({ book, onCancel, onChange, onSave }: BookFormProps) {
 
   return (
     <form onSubmit={handleSave}>
+      <Clock />
       <div className="mb-2">
         <label htmlFor="title">Titre</label>
         <input

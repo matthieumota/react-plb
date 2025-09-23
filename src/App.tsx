@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Book, { type Book as BookType } from "./Book"
 import Button from "./Button"
 import BookForm from "./BookForm"
@@ -90,6 +90,25 @@ function App() {
     image: '',
   })
 
+  useEffect(() => {
+    // console.log('Le composant est monté ou le state a changé')
+  })
+
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(res => res.json())
+      .then(data => setData(data))
+    // console.log('Le composant est monté')
+  }, [])
+
+  useEffect(() => {
+    // console.log(`Le livre choisi a changé`, selectedBook)
+
+    // return () => console.log('le livre vient de changer', selectedBook)
+  }, [selectedBook])
+
   const toggleForm = () => {
     setShowForm(!showForm) // showForm est pas modifié, il est modifié plus tard
   }
@@ -115,6 +134,8 @@ function App() {
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold text-center text-blue-500 mb-6">Bookorama</h1>
+
+        {JSON.stringify(data)}
 
         {selectedBook && <div className="flex justify-center mb-4">
           <div className="w-1/3">
