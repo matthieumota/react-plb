@@ -109,7 +109,11 @@ function EventListenerChallenge() {
                       <p className="text-lg font-semibold text-gray-800">{bird.name}</p>
                       <button
                         onClick={() => handleDeleteBird(bird.name)}
-                        className="text-red-500 hover:text-red-700"
+                        className={clsx("text-red-500 hover:text-red-700", {
+                          '!text-blue-500 hover:!text-blue-700': bird.color.toLowerCase() === 'bleu',
+                          '!text-slate-500 hover:!text-slate-700': bird.color.toLowerCase() === 'noir',
+                          '!text-green-500 hover:!text-green-700': bird.color.toLowerCase() === 'blanc',
+                        })}
                       >
                         Supprimer
                       </button>
