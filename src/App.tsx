@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Book, { type Book as BookType } from "./Book"
 import Button from "./Button"
+import BookForm from "./BookForm"
 
 let nextId = 11
 export const BOOKS = [
@@ -80,14 +81,26 @@ export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
 function App() {
   const [books, setBooks] = useState<BookType[]>(BOOKS)
   const [selectedBook, setSelectedBook] = useState<BookType>()
+  const [showForm, setShowForm] = useState(false)
+  const [newBook, setNewBook] = useState<BookType>({
+    id: 0,
+    title: '',
+    author: AUTHORS[0],
+    year: 0,
+    image: '',
+  })
+
+  const toggleForm = () => {
+    setShowForm(!showForm) // showForm est pas modifié, il est modifié plus tard
+  }
 
   const handleAddBook = () => {
-    const randomBook = BOOKS[Math.floor(Math.random() * BOOKS.length)]
-
     setBooks([
       ...books,
-      { ...randomBook, id: nextId++ }
+      { ...newBook, id: nextId++ }
     ])
+    setNewBook({ id: 0, title: '', author: AUTHORS[0], year: 0, image: '' })
+    toggleForm()
   }
 
   const handleRemoveBook = (book: BookType) => {
@@ -106,6 +119,7 @@ function App() {
         {selectedBook && <div className="flex justify-center mb-4">
           <div className="w-1/3">
             <Book
+              key={selectedBook.id} // reset du state...
               book={selectedBook}
               onSelect={() => setSelectedBook(undefined)}
               selected
@@ -134,11 +148,21 @@ function App() {
           )}
         </div>
 
-        <div className="text-center py-10">
-          <Button onClick={handleAddBook}>
+        {!showForm && <div className="text-center py-10">
+          <Button onClick={toggleForm}>
             Ajouter un livre
           </Button>
-        </div>
+        </div>}
+
+        {showForm && <div className="mt-4">
+          <pre>{JSON.stringify(newBook, null, 2)}</pre>
+          <BookForm
+            book={newBook}
+            onCancel={toggleForm}
+            onChange={(book: BookType) => setNewBook(book)}
+            onSave={handleAddBook}
+          />
+        </div>}
       </div>
     </div>
   )
