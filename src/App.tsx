@@ -93,6 +93,10 @@ function App() {
     setBooks(books.filter(b => b.id !== book.id))
   }
 
+  const handleUpdateBook = (book: BookType) => {
+    setBooks(books.map(b => b.id === book.id ? book : b))
+  }
+
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
@@ -108,6 +112,10 @@ function App() {
                 handleRemoveBook(selectedBook)
                 setSelectedBook(undefined)
               }}
+              onSave={(book) => {
+                handleUpdateBook(book)
+                setSelectedBook(book)
+              }}
             />
           </div>
         </div>}
@@ -120,6 +128,7 @@ function App() {
               onSelect={() => setSelectedBook(b)}
               active={selectedBook?.id !== b.id}
               onRemove={() => handleRemoveBook(b)}
+              onSave={handleUpdateBook}
             />
           )}
         </div>
