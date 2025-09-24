@@ -132,21 +132,34 @@ function App() {
     setShowForm(!showForm) // showForm est pas modifié, il est modifié plus tard
   }
 
-  const handleAddBook = () => {
-    setBooks([
-      ...books,
-      { ...newBook, id: nextId++ }
-    ])
-    setNewBook({ id: 0, title: '', author: AUTHORS[0], year: 0, image: '' })
-    toggleForm()
+  const handleAddBook = async () => {
+    try {
+      const { id, ...bookWithoutId } = newBook
+      const response = await axios.post('http://localhost:3000/books', bookWithoutId)
+      setBooks([...books, response.data])
+      setNewBook({ id: 0, title: '', author: AUTHORS[0], year: 0, image: '' })
+      toggleForm()
+    } catch (err: any) {
+      setError('Erreur lors de l’ajout du livre : ' + err.message)
+    }
   }
 
-  const handleRemoveBook = (book: BookType) => {
-    setBooks(books.filter(b => b.id !== book.id))
+  const handleRemoveBook = async (book: BookType) => {
+    try {
+      await axios.delete(`http://localhost:3000/books/${book.id}`)
+      setBooks(books.filter(b => b.id !== book.id))
+    } catch (err: any) {
+      setError('Erreur lors de la suppression : ' + err.message)
+    }
   }
 
-  const handleUpdateBook = (book: BookType) => {
-    setBooks(books.map(b => b.id === book.id ? book : b))
+  const handleUpdateBook = async (book: BookType) => {
+    try {
+      const response = await axios.put(`http://localhost:3000/books/${book.id}`, book)
+      setBooks(books.map(b => b.id === book.id ? response.data : b))
+    } catch (err: any) {
+      setError('Erreur lors de la mise à jour : ' + err.message)
+    }
   }
 
   return (
