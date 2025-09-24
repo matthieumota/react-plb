@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Book, { type Book as BookType } from "./Book"
 import Button from "./Button"
 import BookForm from "./BookForm"
+import axios from "axios"
 
 let nextId = 11
 export const BOOKS = [
@@ -79,7 +80,9 @@ export const BOOKS = [
 export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
 
 function App() {
-  const [books, setBooks] = useState<BookType[]>(BOOKS)
+  const [books, setBooks] = useState<BookType[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string>()
   const [selectedBook, setSelectedBook] = useState<BookType>()
   const [showForm, setShowForm] = useState(false)
   const [newBook, setNewBook] = useState<BookType>({
@@ -91,23 +94,22 @@ function App() {
   })
 
   useEffect(() => {
-    // console.log('Le composant est monté ou le state a changé')
-  })
+    const loadBooks = async () => {
+      setLoading(true)
 
-  const [data, setData] = useState([])
+      try {
+        await new Promise(resolve => setTimeout(resolve, 500))
+        const response = await axios.get('http://localhost:3000/books')
+        setBooks(response.data)
+      } catch (error: any) {
+        setError(error.message)
+      }
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then(res => res.json())
-      .then(data => setData(data))
-    // console.log('Le composant est monté')
+      setLoading(false)
+    }
+
+    loadBooks()
   }, [])
-
-  useEffect(() => {
-    // console.log(`Le livre choisi a changé`, selectedBook)
-
-    // return () => console.log('le livre vient de changer', selectedBook)
-  }, [selectedBook])
 
   const toggleForm = () => {
     setShowForm(!showForm) // showForm est pas modifié, il est modifié plus tard
@@ -135,8 +137,6 @@ function App() {
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-bold text-center text-blue-500 mb-6">Bookorama</h1>
 
-        {JSON.stringify(data)}
-
         {selectedBook && <div className="flex justify-center mb-4">
           <div className="w-1/3">
             <Book
@@ -155,6 +155,20 @@ function App() {
             />
           </div>
         </div>}
+
+        {loading && (
+          <div className="flex justify-center items-center py-10">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-50"></div>
+            <span className="ml-4 text-blue-500 font-medium">Chargement des livres...</span>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-xl mx-auto mb-4">
+            <strong className="font-bold">Erreur :</strong>
+            <span className="block sm:inline ml-1">{error}</span>
+          </div>
+        )}
 
         <div className="grid grid-cols-4 gap-4">
           {books.map(b => 
