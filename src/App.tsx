@@ -111,6 +111,23 @@ function App() {
     loadBooks()
   }, [])
 
+  useEffect(() => {
+    if (!selectedBook) return
+
+    const loadBook = async (id: number) => {
+      const response = await axios.get(`http://localhost:3000/books/${id}`)
+      console.log(response.data)
+      setSelectedBook(response.data)
+    }
+
+    loadBook(selectedBook.id)
+  }, [selectedBook?.id])
+
+  // Créer un useEffect qui se déclenche si selectedBook change...
+  // Vérifier que le selectedBook existe...
+  // S'il existe, on fait un get sur http://localhost:3000/books/8 où 8 est l'id du selectedBook
+  // Faire un console.log du livre
+
   const toggleForm = () => {
     setShowForm(!showForm) // showForm est pas modifié, il est modifié plus tard
   }
