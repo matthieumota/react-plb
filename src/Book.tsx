@@ -4,6 +4,7 @@ import { AUTHORS } from './App'
 import { cn } from './utils'
 import { NavLink } from 'react-router'
 import { UserContext } from './contexts/UserContext'
+import { useCart } from './stores/useCart'
 
 export type Book = {
   id: number
@@ -36,6 +37,7 @@ function Book({
   const [localBook, setLocalBook] = useState(book)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const { user } = useContext(UserContext)
+  const addToCart = useCart(state => state.addToCart)
 
   const handleSee = () => {
     onSelect()
@@ -193,6 +195,9 @@ function Book({
         <NavLink to={`/livre/${book.id}`} className="bg-blue-500 hover:bg-blue-800 text-white py-1.5 px-4 rounded-md duration-300">
           Visiter
         </NavLink>
+        <Button onClick={() => addToCart(book)}>
+          Ajouter au panier
+        </Button>
       </div>
     </div>
   )

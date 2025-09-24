@@ -7,6 +7,7 @@ import About from './pages/About.tsx'
 import Home from './pages/Home.tsx'
 import BookSingle from './pages/BookSingle.tsx'
 import { UserProvider } from './contexts/UserContext.tsx'
+import Cart from './pages/Cart.tsx'
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         { path: '2', element: <p>2 lààààà</p> }, // /a-propos/2
       ] },
       { path: 'livre/:id', Component: BookSingle },
+      { path: 'panier', element: <Cart /> }
     ],
   },
   { path: '*', element: <p>404</p>, loader: () => {

@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { NavLink, Outlet } from "react-router"
 import { UserContext } from "./contexts/UserContext"
+import { useCart } from "./stores/useCart"
 
 let nextId = 11
 export const BOOKS = [
@@ -79,6 +80,7 @@ export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
 
 function App() {
   const { user, setUser } = useContext(UserContext)
+  const cart = useCart(state => state.cart)
 
   return (
     <div className="bg-gray-100 min-h-screen p-4">
@@ -107,6 +109,8 @@ function App() {
           >
             Connexion
           </button>}
+
+          <NavLink to="/panier">Panier ({cart.length})</NavLink>
         </div>
 
         <Outlet />
