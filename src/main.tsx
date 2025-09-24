@@ -6,6 +6,7 @@ import { createBrowserRouter, redirect, RouterProvider } from 'react-router'
 import About from './pages/About.tsx'
 import Home from './pages/Home.tsx'
 import BookSingle from './pages/BookSingle.tsx'
+import { UserProvider } from './contexts/UserContext.tsx'
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </StrictMode>,
 )

@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Button from './Button'
 import { AUTHORS } from './App'
 import { cn } from './utils'
 import { NavLink } from 'react-router'
+import { UserContext } from './contexts/UserContext'
 
 export type Book = {
   id: number
@@ -34,6 +35,7 @@ function Book({
   const [editMode, setEditMode] = useState(false)
   const [localBook, setLocalBook] = useState(book)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const { user } = useContext(UserContext)
 
   const handleSee = () => {
     onSelect()
@@ -180,12 +182,14 @@ function Book({
           ❤️‍🔥
           {like > 0 && <>({like})</>}
         </Button>
-        <Button title="Supprimer" onClick={handleRemove} className="bg-red-500 hover:bg-red-800">
-          🗑️
-        </Button>
-        <Button title="Modifier" onClick={toggleEdit}>
-          Modifier
-        </Button>
+        {user && <>
+          <Button title="Supprimer" onClick={handleRemove} className="bg-red-500 hover:bg-red-800">
+            🗑️
+          </Button>
+          <Button title="Modifier" onClick={toggleEdit}>
+            Modifier
+          </Button>
+        </>}
         <NavLink to={`/livre/${book.id}`} className="bg-blue-500 hover:bg-blue-800 text-white py-1.5 px-4 rounded-md duration-300">
           Visiter
         </NavLink>

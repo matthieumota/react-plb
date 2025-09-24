@@ -1,4 +1,6 @@
+import { useContext } from "react"
 import { NavLink, Outlet } from "react-router"
+import { UserContext } from "./contexts/UserContext"
 
 let nextId = 11
 export const BOOKS = [
@@ -76,13 +78,36 @@ export const BOOKS = [
 export const AUTHORS = Array.from(new Set(BOOKS.map(b => b.author)))
 
 function App() {
+  const { user, setUser } = useContext(UserContext)
+
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
-        <nav className="flex gap-4">
-          <NavLink to="/" className={({ isActive }) => isActive ? 'text-blue-500' : ''} end>Accueil</NavLink>
-          <NavLink to="/a-propos" className={({ isActive }) => isActive ? 'text-blue-500' : ''}>A propos</NavLink>
-        </nav>
+        <div className="flex justify-between">
+          <nav className="flex gap-4">
+            <NavLink to="/" className={({ isActive }) => isActive ? 'text-blue-500' : ''} end>Accueil</NavLink>
+            <NavLink to="/a-propos" className={({ isActive }) => isActive ? 'text-blue-500' : ''}>A propos</NavLink>
+          </nav>
+
+          {user &&
+            <div>
+              <h1>Bonjour {user.name}</h1>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+                onClick={() => setUser(null)}
+              >
+                Déconnexion
+              </button>
+            </div>
+          }
+
+          {!user && <button
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+            onClick={() => setUser({ name: 'Fiorella' })}
+          >
+            Connexion
+          </button>}
+        </div>
 
         <Outlet />
       </div>
