@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createBrowserRouter, redirect, RouterProvider } from 'react-router'
 import About from './pages/About.tsx'
 import Home from './pages/Home.tsx'
 import BookSingle from './pages/BookSingle.tsx'
@@ -21,6 +21,9 @@ const router = createBrowserRouter([
       { path: 'livre/:id', Component: BookSingle },
     ],
   },
+  { path: '*', element: <p>404</p>, loader: () => {
+    // throw redirect('/')
+  } },
 ])
 
 createRoot(document.getElementById('root')!).render(

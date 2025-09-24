@@ -80,8 +80,8 @@ function App() {
     <div className="bg-gray-100 min-h-screen p-4">
       <div className="max-w-5xl mx-auto">
         <nav className="flex gap-4">
-          <NavLink to="/">Accueil</NavLink>
-          <NavLink to="/a-propos">A propos</NavLink>
+          <NavLink to="/" className={({ isActive }) => isActive ? 'text-blue-500' : ''} end>Accueil</NavLink>
+          <NavLink to="/a-propos" className={({ isActive }) => isActive ? 'text-blue-500' : ''}>A propos</NavLink>
         </nav>
 
         <Outlet />

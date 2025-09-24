@@ -4,6 +4,7 @@ import Button from "../Button"
 import BookForm from "../BookForm"
 import axios from "axios"
 import { AUTHORS } from "../App"
+import { useSearchParams } from "react-router"
 
 function Home() {
   const [books, setBooks] = useState<BookType[]>([])
@@ -88,9 +89,30 @@ function Home() {
     }
   }
 
+  const [searchParams, setSearchParams] = useSearchParams()
+  const search = searchParams.get('search')
+
   return (
     <>
         <h1 className="text-3xl font-bold text-center text-blue-500 mb-6">Bookorama</h1>
+
+        {console.log(Array.from(searchParams.entries()))}
+        <ul>
+          {Array.from(searchParams.entries()).map(value => (
+            <li key={value[0]}>{value[0]}: {value[1]}</li>
+          ))}
+        </ul>
+
+        <input
+          value={search ?? ''}
+          type="text"
+          name="search"
+          className="border border-gray-300 rounded-md py-1 px-2 w-full"
+          onChange={(event) => {
+            searchParams.set('search', event.target.value)
+            setSearchParams(searchParams)
+          }}
+        />
 
         {selectedBook && <div className="flex justify-center mb-4">
             <div className="w-1/3">
@@ -126,7 +148,7 @@ function Home() {
         )}
 
         <div className="grid grid-cols-4 gap-4">
-            {books.map(b => 
+            {books.filter(b => !search || b.title.toLowerCase().includes(search.toLowerCase())).map(b => 
                 <Book
                     key={b.id}
                     book={b}
